@@ -14,11 +14,12 @@ namespace ShowMyContacts {
       if (fileNames.Length > 0) {
         // найден
         XDocument xdoc = XDocument.Load(fileNames[0].FullName);
-        IEnumerable<Contact> contacts = from row in xdoc.Element("MyContacts")?.Elements("Contact")
-                                        select new Contact {
-                                          Name = row.Value,
-                                          TelephoneNumber = row.Attribute("TelephoneNumber")?.Value
-                                        };
+        IEnumerable<Contact> contacts =
+          from row in xdoc.Element("MyContacts")?.Elements("Contact")
+          select new Contact {
+            Name = row.Value,
+            TelephoneNumber = row.Attribute("TelephoneNumber")?.Value
+          };
         foreach (Contact contact in contacts) {
           Console.WriteLine(contact);
         }
@@ -40,7 +41,7 @@ namespace ShowMyContacts {
     public string Name { get; set; }
     public string TelephoneNumber { get; set; }
     public override string ToString() {
-      return string.Format(format: "{0, -20} {1}",arg0: Name, TelephoneNumber);
+      return string.Format(format: "{0, -20} {1}", Name, TelephoneNumber);
     }
   }
 }
