@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 
 namespace Preferences {
-  /// <summary>
-  /// Логика взаимодействия для App.xaml
-  /// </summary>
   public partial class App : Application {
+    public int fontSize { get; set; } = 12;
   }
 }

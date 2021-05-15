@@ -4,6 +4,15 @@
         ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen"
         Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
         Title="MainWindow" Height="450" Width="800" Closed="Window_Closed" Deactivated="Window_Deactivated">
+  <Window.Resources>
+    <Style x:Key="SliderFontSize">
+      <Setter Property="Control.FontSize">
+        <Setter.Value>
+          <Binding Source="{x:Static Application.Current}" Path="fontSize"/>
+        </Setter.Value>
+      </Setter>
+    </Style>
+  </Window.Resources>
   <DockPanel>
     <Grid DockPanel.Dock = "Top"></Grid>
     <StatusBar Height="20" DockPanel.Dock = "Bottom" />
@@ -12,7 +21,11 @@
         <ColumnDefinition Width="*" />
         <ColumnDefinition Width="300" />
       </Grid.ColumnDefinitions>
-      <TextBlock Grid.Column="0" TextWrapping="WrapWithOverflow" Margin="5,3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</TextBlock>
+      <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
+        <TextBlock x:Name="txtArea" TextWrapping="WrapWithOverflow" Margin="5,3" Style="{StaticResource SliderFontSize}">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </TextBlock>
+      </ScrollViewer>
       <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="5,0">
           <GroupBox Header="Способ хранения настроек" Padding="0, 5, 0, -10">
@@ -20,6 +33,34 @@
               <RadioButton x:Name="Mode0" HorizontalAlignment="Center">Файл</RadioButton>
               <RadioButton x:Name="Mode1" HorizontalAlignment="Center">Реестр</RadioButton>
             </UniformGrid>
+          </GroupBox>
+          <GroupBox Header="Настройки" Padding="0">
+            <StackPanel Margin="35,0">
+              <TextBlock Text="Цвет фона" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+              <Rectangle x:Name="BackgroundColorPanel" HorizontalAlignment="Stretch" Height="70" PreviewMouseLeftButtonUp="Background_PreviewMouseLeftButtonUp">
+                <Rectangle.Fill>
+                  <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#FFF8F897" Offset="0.0" />
+                    <GradientStop Color="#FFEB7D7D" Offset="0.25" />
+                    <GradientStop Color="PowderBlue" Offset="0.75" />
+                    <GradientStop Color="#FFA790EE" Offset="1.0" />
+                  </LinearGradientBrush>
+                </Rectangle.Fill>
+              </Rectangle>
+              <TextBlock Text="Цвет текста" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+              <Rectangle x:Name="ForegroundColorPanel" HorizontalAlignment="Stretch" Height="70" PreviewMouseLeftButtonUp="Foreground_PreviewMouseLeftButtonUp">
+                <Rectangle.Fill>
+                  <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="Yellow" Offset="0.0" />
+                    <GradientStop Color="Red" Offset="0.25" />
+                    <GradientStop Color="Blue" Offset="0.75" />
+                    <GradientStop Color="#FF156815" Offset="1.0" />
+                  </LinearGradientBrush>
+                </Rectangle.Fill>
+              </Rectangle>
+              <TextBlock Text="Размер шрифта" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+              <Slider Name="fontSize" Value="{Binding Source={x:Static Application.Current}, Path=fontSize, Mode=TwoWay}" Minimum="10" Maximum="22" TickPlacement="Both"/>
+            </StackPanel>
           </GroupBox>
         </StackPanel>
       </ScrollViewer>

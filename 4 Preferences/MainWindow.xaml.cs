@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Windows;
+using System.Windows.Media;
 
 namespace Preferences {
   public partial class MainWindow {
@@ -8,6 +10,8 @@ namespace Preferences {
     public MainWindow() {
 
       InitializeComponent();
+
+      
 
       // определяем режим
       if (settings.areInRegistry()) {
@@ -26,8 +30,7 @@ namespace Preferences {
         settings.Save2File(this);
         // чистим реестр
         settings.clearRegistry();
-      }
-      else {
+      } else {
         // сбрасываем настройки в реестр
         settings.Save2Registry(this);
         // и удаляем файл
@@ -37,6 +40,40 @@ namespace Preferences {
 
     private void Window_Deactivated(object sender, EventArgs e) {
       Window_Closed(null, null);
+    }
+
+    private void Background_PreviewMouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+      Point position = new Point {
+        X = e.GetPosition(BackgroundColorPanel).X,
+        Y = e.GetPosition(BackgroundColorPanel).Y
+      };
+
+      SolidColorBrush solidcolor = ColorPicker.GetPixelColor(BackgroundColorPanel.PointToScreen(position));
+
+      Color color = Color.FromArgb(solidcolor.Color.A,
+                                   solidcolor.Color.R,
+                                   solidcolor.Color.G,
+                                   solidcolor.Color.B);
+
+      SolidColorBrush brush = new SolidColorBrush(color);
+      txtArea.Background = brush;
+    }
+
+    private void Foreground_PreviewMouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+      Point position = new Point {
+        X = e.GetPosition(BackgroundColorPanel).X,
+        Y = e.GetPosition(BackgroundColorPanel).Y
+      };
+
+      SolidColorBrush solidcolor = ColorPicker.GetPixelColor(BackgroundColorPanel.PointToScreen(position));
+
+      Color color = Color.FromArgb(solidcolor.Color.A,
+                                   solidcolor.Color.R,
+                                   solidcolor.Color.G,
+                                   solidcolor.Color.B);
+
+      SolidColorBrush brush = new SolidColorBrush(color);
+      txtArea.Foreground = brush;
     }
   }
 }
