@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2 ShowMyContacts", "2 ShowM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3 ShowContactPhonesOnly", "3 ShowContactPhonesOnly\3 ShowContactPhonesOnly.csproj", "{9FBBD58A-4ADD-40C0-9C95-E380CD5188AB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "4 Preferences", "4 Preferences\4 Preferences.csproj", "{38F1824C-7F66-454C-B4F8-83CE8DBECDC7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{9FBBD58A-4ADD-40C0-9C95-E380CD5188AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FBBD58A-4ADD-40C0-9C95-E380CD5188AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FBBD58A-4ADD-40C0-9C95-E380CD5188AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38F1824C-7F66-454C-B4F8-83CE8DBECDC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38F1824C-7F66-454C-B4F8-83CE8DBECDC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38F1824C-7F66-454C-B4F8-83CE8DBECDC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38F1824C-7F66-454C-B4F8-83CE8DBECDC7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
