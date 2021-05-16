@@ -3,16 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen"
         Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
-        Title="MainWindow" Height="450" Width="800" Closed="Window_Closed" Deactivated="Window_Deactivated">
-  <Window.Resources>
-    <Style x:Key="SliderFontSize">
-      <Setter Property="Control.FontSize">
-        <Setter.Value>
-          <Binding Source="{x:Static Application.Current}" Path="fontSize"/>
-        </Setter.Value>
-      </Setter>
-    </Style>
-  </Window.Resources>
+        Title="MainWindow" Height="450" Width="800" Deactivated="Window_Deactivated">
   <DockPanel>
     <Grid DockPanel.Dock = "Top"></Grid>
     <StatusBar Height="20" DockPanel.Dock = "Bottom" />
@@ -22,7 +13,7 @@
         <ColumnDefinition Width="300" />
       </Grid.ColumnDefinitions>
       <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
-        <TextBlock x:Name="txtArea" TextWrapping="WrapWithOverflow" Margin="5,3" Style="{StaticResource SliderFontSize}">
+        <TextBlock x:Name="txtArea" TextWrapping="WrapWithOverflow" Margin="5,3" FontSize="{Binding ElementName=fontSizeSlider, Path=Value}">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
         </TextBlock>
       </ScrollViewer>
@@ -59,7 +50,7 @@
                 </Rectangle.Fill>
               </Rectangle>
               <TextBlock Text="Размер шрифта" HorizontalAlignment="Center" Margin="0,5,0,0"/>
-              <Slider Name="fontSize" Value="{Binding Source={x:Static Application.Current}, Path=fontSize, Mode=TwoWay}" Minimum="10" Maximum="22" TickPlacement="Both"/>
+              <Slider x:Name="fontSizeSlider" Minimum="10" Maximum="22" TickPlacement="Both" Value="12"/>
             </StackPanel>
           </GroupBox>
         </StackPanel>

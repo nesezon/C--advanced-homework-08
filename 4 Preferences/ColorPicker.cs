@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media;
 
@@ -28,7 +23,7 @@ namespace Preferences {
       // Release the DC after getting the Color.
       ReleaseDC(0, lDC);
 
-      byte a = (byte)((intColor >> 0x18) & 0xffL);
+      // byte a = (byte)((intColor >> 0x18) & 0xffL);
       byte b = (byte)((intColor >> 0x10) & 0xffL);
       byte g = (byte)((intColor >> 8) & 0xffL);
       byte r = (byte)(intColor & 0xffL);

@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Windows;
+using System.Windows.Media;
 using System.Xml;
 
 namespace Preferences {
@@ -62,6 +63,12 @@ namespace Preferences {
         (key, win) => { win.Left = Convert.ToDouble(key); });
       setFromRegistry(regKey.GetValue("Window.Top"), mainWindow,
         (key, win) => { win.Top = Convert.ToDouble(key); });
+      setFromRegistry(regKey.GetValue("Text.Size"), mainWindow,
+        (key, win) => { win.fontSizeSlider.Value = Convert.ToDouble(key); });
+      setFromRegistry(regKey.GetValue("Text.ForeGround"), mainWindow,
+        (key, win) => { win.txtArea.Foreground = (SolidColorBrush)new BrushConverter().ConvertFrom(key); });
+      setFromRegistry(regKey.GetValue("Text.BackGround"), mainWindow,
+        (key, win) => { win.txtArea.Background = (SolidColorBrush)new BrushConverter().ConvertFrom(key); });
     }
 
     private void setFromRegistry(object key, MainWindow mainWindow, Action<object, MainWindow> doWork) {
@@ -81,6 +88,16 @@ namespace Preferences {
       wrkKey.SetValue("Window.State", mainWindow.WindowState);
       wrkKey.SetValue("Window.Left", mainWindow.Left);
       wrkKey.SetValue("Window.Top", mainWindow.Top);
+      wrkKey.SetValue("Text.Size", mainWindow.fontSizeSlider.Value);
+      wrkKey.SetValue("Text.ForeGround", mainWindow.txtArea.Foreground);
+      // Background может принимать значение null, поэтому:
+      if (mainWindow.txtArea.Background != null)
+        wrkKey.SetValue("Text.BackGround", mainWindow.txtArea.Background);
+      else {
+        var subkey = wrkKey.GetValue("Text.BackGround");
+        if (subkey != null) wrkKey.DeleteValue("Text.BackGround");
+      }
+      wrkKey.Close();
     }
 
     /// <summary>
@@ -97,6 +114,10 @@ namespace Preferences {
           mainWindow.Left = Convert.ToDouble(allAppSettings["Window.Left"]);
           mainWindow.Top = Convert.ToDouble(allAppSettings["Window.Top"]);
         }
+        mainWindow.fontSizeSlider.Value = Convert.ToDouble(allAppSettings["Text.Size"]);
+        mainWindow.txtArea.Foreground = (SolidColorBrush)new BrushConverter().ConvertFrom(allAppSettings["Text.ForeGround"]);
+        if (allAppSettings["Text.BackGround"] != null)
+          mainWindow.txtArea.Background = (SolidColorBrush)new BrushConverter().ConvertFrom(allAppSettings["Text.BackGround"]);
       }
     }
 
@@ -107,7 +128,7 @@ namespace Preferences {
       // загрузка имеющегося конфига в doc
       var doc = new XmlDocument();
       string confPath = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
-
+      // загружаю из файла если он есть. иначе использую пустой шаблон
       if (File.Exists(confPath)) doc.Load(confPath);
       else doc.LoadXml(EMPTYCONF);
 
@@ -117,7 +138,13 @@ namespace Preferences {
       Add2Config("Window.State", mainWindow.WindowState.ToString(), doc);
       Add2Config("Window.Left", mainWindow.Left.ToString(), doc);
       Add2Config("Window.Top", mainWindow.Top.ToString(), doc);
-
+      Add2Config("Text.Size", mainWindow.fontSizeSlider.Value.ToString(), doc);
+      Add2Config("Text.ForeGround", mainWindow.txtArea.Foreground.ToString(), doc);
+      // Background может принимать значение null, поэтому:
+      if (mainWindow.txtArea.Background != null)
+        Add2Config("Text.BackGround", mainWindow.txtArea.Background.ToString(), doc);
+      else
+        DelFromConfig("Text.BackGround", doc);
       // сохранение
       doc.Save(confPath);
     }
@@ -127,11 +154,9 @@ namespace Preferences {
     /// </summary>
     private void Add2Config(string key, string value, XmlDocument doc) {
       XmlNode node = doc.SelectSingleNode("//appSettings");
-      // если узла appSettings нет, добавляем
-      // if (node == null) node = doc.CreateNode("element", "appSettings", "");
-      XmlElement element = node.SelectSingleNode(string.Format("//add[@key='{0}']", key)) as XmlElement;
+      if (node == null) return;
       // Если строка с таким ключем существует - записываем значение.
-      if (element != null)
+      if (node.SelectSingleNode($"//add[@key='{key}']") is XmlElement element)
         element.SetAttribute("value", value);
       else {
         // Иначе: создаем строку и формируем в ней пару [ключ]-[значение].
@@ -140,6 +165,15 @@ namespace Preferences {
         element.SetAttribute("value", value);
         node.AppendChild(element);
       }
+    }
+
+    /// <summary>
+    /// удаление параметра в конфигурационном файле
+    /// </summary>
+    private void DelFromConfig(string key, XmlDocument doc) {
+      XmlNode node = doc.SelectSingleNode("//appSettings");
+      if (node == null) return;
+      if (node.SelectSingleNode($"//add[@key='{key}']") is XmlElement element) node.RemoveChild(element);
     }
   }
 }

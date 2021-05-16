@@ -11,8 +11,6 @@ namespace Preferences {
 
       InitializeComponent();
 
-      
-
       // определяем режим
       if (settings.areInRegistry()) {
         Mode1.IsChecked = true;
@@ -23,7 +21,7 @@ namespace Preferences {
       }
     }
 
-    private void Window_Closed(object sender, EventArgs e) {
+    private void Window_Deactivated(object sender, EventArgs e) {
       // В зависимости от выбранного режима
       if (Mode0.IsChecked == true) {
         // сбрасываем настройки в файл конфигурации
@@ -36,10 +34,6 @@ namespace Preferences {
         // и удаляем файл
         settings.removeFile();
       }
-    }
-
-    private void Window_Deactivated(object sender, EventArgs e) {
-      Window_Closed(null, null);
     }
 
     private void Background_PreviewMouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e) {
